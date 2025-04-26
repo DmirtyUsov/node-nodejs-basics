@@ -7,11 +7,12 @@ const DIR_PATH = path.resolve(__dirname, WORKING_DIR);
 
 const list = async () => {
   try {
-    const files = await fs.readdir(DIR_PATH);
+    const dirEntries = await fs.readdir(DIR_PATH, { withFileTypes: true });
 
-    for (const file of files) {
-      console.log(file);
-    }
+    const files = dirEntries
+      .filter((entry) => entry.isFile())
+      .map((file) => file.name);
+    console.log(files);
   } catch {
     throw new Error(ERROR_MESSAGE);
   }
